@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.deepcoding.dao.RolesPermissionsDao">
+	<!-- 根据 角色 id 查询该角色所有的权限 -->
+	<resultMap type="RolesPermissions" id="rolesPermissionsResultMap">
+		<id property="id" column="id"/>
+		<collection property="permissions" column="permission_id" select="cn.deepcoding.dao.PermissionsDao.getById"></collection>
+	</resultMap>
+	<!-- 查询所有 -->
+	<resultMap type="RolesPermissions" id="rolesPermissionsResultMap2">
+		<id property="id" column="id"/>
+		<collection property="permissions" column="permission_id" select="cn.deepcoding.dao.PermissionsDao.getById"></collection>
+		<collection property="roles" column="role_id" select="cn.deepcoding.dao.RolesDao.getById"></collection>
+	</resultMap>
+	
+	<!-- 根据 角色 id 查询该角色所有的权限  -->
+	<select id="getPermissionByRolesId" parameterType="Integer" resultMap="rolesPermissionsResultMap">
+		select * from roles_permissions where role_id=#{id}
+	</select>
+	
+	<!-- 查询所有 -->
+	<select id="getAll" parameterType="cn.deepcoding.model.RolesPermissions" resultMap="rolesPermissionsResultMap2">
+		select * from roles_permissions
+	</select>
+	
+	<!-- 根据 角色 id 添加权限 -->
+	<select id="addByRoleId" parameterType="Integer">
+		insert into roles_permissions(role_id,permission_id) values(#{id},#{permissionId})
+	</select>
+	<!-- 根据角色 id 删除关联信息 -->
+	<delete id="deleteByRoleId" parameterType="Integer">
+		delete from roles_permissions where role_id=#{id}
+	</delete>
+	<!--根据 权限 id 删除关联信息  -->
+	<delete id="deleteByPermissionId" parameterType="Integer">
+		delete from roles_permissions where permission_id=#{id}
+	</delete>
+	<!--根据 权限 id 和角色 id  删除关联信息  -->
+	<delete id="deleteByRoleIdPermissionId" parameterType="Integer">
+		delete from roles_permissions where role_id=#{roleId} and permission_id=#{permissionId}
+	</delete>
+</mapper>	

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.deepcoding.dao.RolesDao">
+	<resultMap type="roles" id="rolesResultMap">
+		<id property="id" column="id"/>
+		<result property="rolename" column="role_name"/>
+		<result property="description" column="description"/>
+		<result property="available" column="available"/>
+		<collection property="rolesPermissions" column="id" select="cn.deepcoding.dao.RolesPermissionsDao.getPermissionByRolesId"></collection>
+	</resultMap>
+	
+	<!-- 查询所有 -->
+	<select id="getAll" parameterType="cn.deepcoding.model.Roles" resultMap="rolesResultMap">
+		select * from roles
+		<where>
+			<if test="rolename != null and rolename != ''">
+				role_name like concat("%",#{rolename},"%")
+			</if>
+		</where>
+	</select>
+	<!-- 根据id 查询 -->
+	<select id="getById" parameterType="cn.deepcoding.model.Roles" resultMap="rolesResultMap">
+		select * from roles where id=#{id}
+	</select>
+	<!-- 添加 -->
+	<insert id="addRole" parameterType="cn.deepcoding.model.Roles">
+		insert into roles (id,role_name,description,available) values(#{id},#{rolename},#{description},#{available})
+	</insert>
+	<!-- 修改 -->
+	<update id="updateRole" parameterType="cn.deepcoding.model.Roles">
+		update roles set role_name=#{rolename},description=#{description},available=#{available} where id=#{id}
+	</update>
+	<!-- 删除 -->
+	<delete id="deleteRole" parameterType="Integer">
+		delete from roles where id=#{id}
+	</delete>
+</mapper>	

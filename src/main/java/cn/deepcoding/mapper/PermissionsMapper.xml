@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.deepcoding.dao.PermissionsDao">
+	<resultMap type="permissions" id="permissionsResultMap">
+		<id property="id" column="id"/>
+		<result property="permission" column="permission"/>
+		<result property="resource" column="resource"/>
+		<result property="perCode" column="perCode"/>
+		<result property="description" column="description"/>
+		<result property="available" column="available"/>
+	</resultMap>
+	
+	<!-- 查询所有 -->
+	<select id="getAll" parameterType="cn.deepcoding.model.Permissions" resultMap="permissionsResultMap">
+		select * from permissions
+		<where>
+			<if test="permission != null and permission != ''">
+				permission like concat("%",#{permission},"%")
+			</if>
+		</where>
+	</select>
+	<!-- 根据id 查询 -->
+	<select id="getById" parameterType="Integer" resultMap="permissionsResultMap">
+		select * from permissions where id=#{id}
+	</select>
+	<!-- 修改 -->
+	<update id="update" parameterType="cn.deepcoding.model.Permissions">
+		update permissions set permission=#{permission},resource=#{resource},perCode=#{perCode},description=#{description},
+		available=#{available} where id=#{id}
+	</update>
+	<!-- 添加 -->
+	<insert id="addPermission" parameterType="cn.deepcoding.model.Permissions">
+		insert into permissions(permission,resource,perCode,description,available) values(#{permission},#{resource},#{perCode},#{description},#{available})
+	</insert>
+	<!-- 删除 -->
+	<delete id="del" parameterType="Integer">
+		delete from permissions where id={id}
+	</delete>
+</mapper>
