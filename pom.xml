@@ -21,7 +21,7 @@
 		<mybatis-spring.version>1.3.0</mybatis-spring.version>
 		<mysql-connector.version>5.1.42</mysql-connector.version>
 
-		<poi.version>3.17</poi.version>
+		<poi.version>4.1.1</poi.version>
 		<!-- shiro版本 -->
 		<shiro.version>1.3.2</shiro.version>
 		<!-- 分页插件 -->
